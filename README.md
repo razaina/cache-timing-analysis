@@ -24,3 +24,6 @@ The following programs:
     - rijndael-api\*.c
 
 Are from ftp://ftp.aci.com.pl/pub/security/cryptography/algorithms/aes/aes-c-rijmen/    
+
+All the other files are just scripts that I use to process traces I collect while runing my
+experiences. They mainly enable me to draw graphs using gnuplot. 
