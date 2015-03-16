@@ -25,5 +25,11 @@ The following programs:
 
 Are from ftp://ftp.aci.com.pl/pub/security/cryptography/algorithms/aes/aes-c-rijmen/    
 
+The following program:
+
+    - ctatest.c
+
+Is the main program that I use to test the above programs.    
+
 All the other files are just scripts that I use to process traces I collect while runing my
 experiences. They mainly enable me to draw graphs using gnuplot. 
