@@ -11,6 +11,10 @@ The following programs:
     - search.c
     - corr.c
 
+It is required to install use OpenSSL as a static library in the project. Here is a tutorial to do
+so: http://razaina.fr/using-openssl-as-a-static-library-within-an-android-native-project/
+    
+
 Are from Bernstein's paper http://cr.yp.to/antiforgery/cachetiming-20050414.pdf
     
 The following programs:
