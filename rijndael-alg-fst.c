@@ -884,6 +884,18 @@ void rijndaelEncrypt(const u32 rk[/*4*(Nr + 1)*/], int Nr, const u8 pt[16], u8 c
    	s1 = Te0[t1 >> 24] ^ Te1[(t2 >> 16) & 0xff] ^ Te2[(t3 >>  8) & 0xff] ^ Te3[t0 & 0xff] ^ rk[ 9];
    	s2 = Te0[t2 >> 24] ^ Te1[(t3 >> 16) & 0xff] ^ Te2[(t0 >>  8) & 0xff] ^ Te3[t1 & 0xff] ^ rk[10];
    	s3 = Te0[t3 >> 24] ^ Te1[(t0 >> 16) & 0xff] ^ Te2[(t1 >>  8) & 0xff] ^ Te3[t2 & 0xff] ^ rk[11];
+
+    time2 = get_cycle_count();
+    disable_counters();
+    ch1 = read_pmn(0), cm1 = read_pmn(1), o1 = read_flags(), dr = read_pmn(2), dw = read_pmn(3);
+
+    fprintf(fp, "%u %u %u 0x%X %u %u\n", 
+                (time2 - time1), 
+                ch1, cm1, o1,
+                dr, dw);
+    fflush(fp);
+
+
     /* round 3: */
    	t0 = Te0[s0 >> 24] ^ Te1[(s1 >> 16) & 0xff] ^ Te2[(s2 >>  8) & 0xff] ^ Te3[s3 & 0xff] ^ rk[12];
    	t1 = Te0[s1 >> 24] ^ Te1[(s2 >> 16) & 0xff] ^ Te2[(s3 >>  8) & 0xff] ^ Te3[s0 & 0xff] ^ rk[13];
@@ -1043,19 +1055,6 @@ void rijndaelEncrypt(const u32 rk[/*4*(Nr + 1)*/], int Nr, const u8 pt[16], u8 c
 		(Te4[(t2      ) & 0xff] & 0x000000ff) ^
 		rk[3];
 	PUTU32(ct + 12, s3);
-
-
-    time2 = get_cycle_count();
-    disable_counters();
-    ch1 = read_pmn(0), cm1 = read_pmn(1), o1 = read_flags(), dr = read_pmn(2), dw = read_pmn(3);
-
-    fprintf(fp, "%u %u %u 0x%X %u %u\n", 
-                (time2 - time1), 
-                ch1, cm1, o1,
-                dr, dw);
-    fflush(fp);
-
-
 
 }
 

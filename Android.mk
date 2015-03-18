@@ -18,7 +18,7 @@ include $(CLEAR_VARS)
 LOCAL_MODULE    := bench
 LOCAL_SRC_FILES := bench.c v7_pmu.S
 LOCAL_ARM_MODE := arm
-LOCAL_CFLAGS := -g -O0
+LOCAL_CFLAGS := -g -O3
 include $(BUILD_EXECUTABLE)
 
 #include $(CLEAR_VARS)

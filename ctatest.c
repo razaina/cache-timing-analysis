@@ -78,10 +78,10 @@ int main(int argc, char *argv[])
     {
         if(test == TEST_CASE_P1K1P1K1)
         {
-            /*printf("Execution test case Test1\n");*/
-            /*Test1();*/
-            printf("Execution test case Test2\n");
-            Test2();
+            printf("Execution test case Test1\n");
+            Test1();
+            /*printf("Execution test case Test2\n");*/
+            /*Test2();*/
 
         }
     }
@@ -234,7 +234,7 @@ void Test1(){
     cipherInstance cipherInst;
 
     FILE* fd = cyclecounter_open();
-    int nLoop = 10000;
+    int nLoop = 1000;
     uint32_t t1;
     FILE *fp = fopen ("/data/local/tmp/trace", "w+");
 
@@ -243,21 +243,24 @@ void Test1(){
     BYTE* plaintextCandidat;
 
 
-    keyCandidat = data[0][60][1];
-    plaintextCandidat = data[0][60][0];
+    /*keyCandidat = data[0][60][1];*/
+    /*plaintextCandidat = data[0][60][0];*/
 
-    printBlock16(plaintextCandidat, "[+] plaincandidat");
-    printBlock16(keyCandidat, "[+] keyCandidat");
+    /*printBlock16(plaintextCandidat, "[+] plaincandidat");*/
+    /*printBlock16(keyCandidat, "[+] keyCandidat");*/
     k = 0;
     j = 0;
 
     /*u32 Times[8][53][nLoop][1];*/
-    /*for(k = 0; k < 8 ; k++)*/
-    /*{*/
-        /*for(j = 65; j <= 118; j++)*/
-        /*{*/
-            /*keyCandidat = data[k][j][1];*/
-            /*plaintextCandidat = data[k][j][0];*/
+    for(k = 0; k < 8 ; k++)
+    {
+        for(j = 65; j <= 118; j++)
+        {
+            keyCandidat = data[k][j][1];
+            plaintextCandidat = data[k][j][0];
+
+            /*keyCandidat = data[0][118][1];*/
+            /*plaintextCandidat = data[0][118][0];*/
 
             /*printBlock16(plaintextCandidat, "[+] plaincandidat");*/
             /*printBlock16(keyCandidat, "[+] keyCandidat");*/
@@ -318,8 +321,8 @@ void Test1(){
                             /*o1, o2, o3, */
                             /*k, j);*/
             }
-        /*}*/
-    /*}*/
+        }
+    }
     fclose(fp);
     cyclecounter_close(fd);
     return;
