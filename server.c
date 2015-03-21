@@ -1,4 +1,5 @@
 #include <sys/types.h>
+#include <sys/time.h>
 #include "armpmu_lib.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -25,6 +26,9 @@ char in[1537];
 int r;
 char out[40];
 FILE* fd; 
+struct timeval tv_debut;
+struct timeval tv_fin;
+long long int duree;
 
 
 
@@ -43,15 +47,22 @@ void handle(char out[40],char in[],int len, FILE* f)
     /*for(i = 0; i < len; ++i) printf("%x", in[i]);*/
     /*printf(") ==> [AES_encrypt] ==> ");*/
     cyclecounter_flushall(fd);
-    *(unsigned int *) (out + 32) = get_cycle_count();
+    /**(unsigned int *) (out + 32) = get_cycle_count();*/
     enable_counters();
+    gettimeofday(&tv_debut, NULL);
+    *(unsigned int*) (out + 32) = 1000000 * tv_debut.tv_sec + tv_debut.tv_usec;
+
     AES_encrypt(in,workarea,&expanded);
+
+    gettimeofday(&tv_fin, NULL);
+    *(unsigned int *) (out + 36) = 1000000 * tv_fin.tv_sec + tv_fin.tv_usec;
     disable_counters();
-    *(unsigned int *) (out + 36) = get_cycle_count();
+
+    /**(unsigned int *) (out + 36) = get_cycle_count();*/
     ch1 = read_pmn(0), cm1 = read_pmn(1), o1 = read_flags();
     dr = read_pmn(2), dw = read_pmn(3);
     fprintf(f, "%u %u %u %u %u\n", ch1, cm1, o1, dr, dw);
-    fflush(f);
+    /*fflush(f);*/
     /*printf("[");*/
     /*for(i = 0; i < 16; ++i) printf("%x", workarea[i]);*/
     /*printf("] [");*/

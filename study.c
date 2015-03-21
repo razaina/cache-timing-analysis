@@ -57,12 +57,12 @@ void studyinput(FILE *fp)
                     unsigned int timing;
                     timing = *(unsigned int *) (response + 36);
                     timing -= *(unsigned int *) (response + 32);
-                    if (timing < 1400) { /* clip tail to reduce noise */
+                    /*if (timing < 1400) { [> clip tail to reduce noise <]*/
                         fprintf(fp, "%u\n", timing);
-                        fflush(fp);
+                        /*fflush(fp);*/
                         tally(timing);
                         return;
-                    }
+                    /*}*/
                 }
             }
             if (poll(&p,1,0) <= 0) break;

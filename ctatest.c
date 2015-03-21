@@ -6,6 +6,7 @@
 #include <time.h>
 #include "rijndael-api-fst.h"
 #include <ctype.h>
+#include "armpmu_lib.h"
 #include <unistd.h>
 #include <stdarg.h>
 #include <stdint.h>
@@ -78,10 +79,12 @@ int main(int argc, char *argv[])
     {
         if(test == TEST_CASE_P1K1P1K1)
         {
-            printf("Execution test case Test1\n");
-            Test1();
+            /*printf("Execution test case Test1\n");*/
+            /*Test1();*/
             /*printf("Execution test case Test2\n");*/
             /*Test2();*/
+            printf("Execution test case Test3\n");
+            Test3();
 
         }
     }
@@ -166,6 +169,94 @@ static inline uint32_t Op(FILE* fd, BYTE plaintextCandidat[], cipherInstance *ci
     }
     return (t2 - t1);
 }
+
+void Test3()
+{
+    int i, j, r, k, l;
+    BYTE block[BLOCK_SIZE];
+    BYTE output[BLOCK_SIZE];
+    BYTE output2[BLOCK_SIZE];
+    char keyMaterial[320];
+    keyInstance keyInst;
+    cipherInstance cipherInst;
+
+    FILE* fd = cyclecounter_open();
+    int nLoop = 1000;
+    int nbOffsets = 8;
+    uint32_t t1;
+    FILE *fp = fopen ("/data/local/tmp/trace", "w+");
+
+    BYTE* keyCandidat;
+    BYTE* plaintextCandidat;
+
+
+    int offset;
+    int numBlocks;
+    struct timeval start;
+    struct timeval end;
+    long long int tmp = 0, time;
+    u32 time1, time2, ch1, cm1, o1, dr, dw;
+
+    /*keyCandidat = data[0][65][1];*/
+    for(j = 0; j < nLoop; j++)
+    {
+        /*keyCandidat[0] = (BYTE)rand()%256;*/
+        for(i = 0; i < nLoop; i++)
+        {
+            /*memset(keyMaterial, 0, sizeof(keyMaterial));*/
+            /*memcpy(keyMaterial, keyCandidat, 16);*/
+
+            /*r = makeKey(&keyInst, ENCRYPT, AES_KEY_LEN_128, keyMaterial);*/
+            /*if(r != TRUE)*/
+            /*{*/
+                /*printf("[+] makeKey error %d\n", r);*/
+                /*return;*/
+            /*}*/
+
+            /*r = cipherInit(&cipherInst, MODE_ECB, NULL);*/
+            /*if(r != TRUE)*/
+            /*{*/
+                /*printf("[+] cipherInit error %d\n", r);*/
+                /*return;*/
+            /*}*/
+
+            /*numBlocks = AES_KEY_LEN_128/128;*/
+
+            cyclecounter_flushall(fd);
+            /*gettimeofday(&start, NULL);*/
+            enable_counters();
+            time1 = get_cycle_count();
+
+            /*for (i = numBlocks; i > 0; i--) {*/
+                /*rijndaelEncrypt2((&keyInst)->rk, (&keyInst)->Nr, plaintextCandidat, output);*/
+                /**(plaintextCandidat) += 16;*/
+                /**(output) += 16;*/
+            /*}*/
+
+            time2 = get_cycle_count();
+            disable_counters();
+            /*gettimeofday(&end, NULL);*/
+
+            /*ch1 = read_pmn(0), cm1 = read_pmn(1), o1 = read_flags(), dr = read_pmn(2), dw = read_pmn(3);*/
+            /*tmp = end.tv_sec - start.tv_sec;*/
+            /*tmp *= 1000000;*/
+            /*tmp += end.tv_usec - start.tv_usec;*/
+
+            /*time += tmp;*/
+
+            fprintf(fp, "%u %u %u 0x%X %u %u\n", 
+                        (time2 - time1), 
+                        ch1, cm1, o1,
+                        dr, dw);
+        }
+        /*fprintf(fp, "%lld\n", time/nLoop);*/
+    }
+    fclose(fp);
+    cyclecounter_close(fd);
+}
+
+
+
 
 void Test2()
 {
